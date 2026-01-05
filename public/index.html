@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YunTing's Portofolio</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="js_fold/database.js"></script>
+    <script src="js_fold/gsap.js" defer></script>
+
+</head>
+<header>
+    <nav class="navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          <img src="imgs/pic/logo.png" alt="logo" id="logo" >
+          <span class="ms-2 text-white" style="font-family: 'Times New Roman', Times, serif;" id="left_title">YunTing</span>
+        </a>
+    
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+          aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item"><a class="nav-link" href="#intro">INTRO</a></li>
+            <li class="nav-item"><a class="nav-link" href="#drawing">DRAWING</a></li>
+            <li class="nav-item"><a class="nav-link" href="#picture">PICTURE</a></li>
+            <li class="nav-item"><a class="nav-link" href="#video">VIDEO</a></li>
+            <li class="nav-item"><a class="nav-link" href="#model">MODEL</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+</header>
+<body>
+    <main id="parallax-container">
+        <img src="imgs/pic/sky.jpg" class="layer" id="layer-sky" alt="bluesky">
+        <img src="imgs/pic/star.png" class="layer" id="layer-star" alt="star">
+        <img src="imgs/pic/fox.png" class="layer" id="layer-fox" alt="tree">
+        <img src="imgs/pic/bear.png" class="layer" id="layer-bear" alt="bear">
+        
+        <img src="imgs/pic/bird.png" class="layer" id="layer-bird" alt="bird">
+        
+        <div id="text-overlay">
+            <h1>Yun's website</h1>
+        </div>
+    </main>
+
+    <section id="intro" class="content-section">
+    <div class="container">
+        <h2>INTRO</h2>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="imgs/pic/10square.png" alt="Yun's photo" style="width: 100%; height: auto;">
+            </div>
+            <div class="col-md-8">
+                <h3>About Me</h3>
+                <p>Hello! I'm YunTing, a passionate artist and content creator. Welcome to my portfolio where I showcase my drawings, videos, 3D models, and photography work. Feel free to explore and connect with me!</p>
+                
+                <div class="social-links-container">
+                        <a class="social-link" href="https://www.youtube.com/@naki9112" target="_blank" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.2-1.7-.9-2.5c-.9-.9-1.9-.9-2.4-1C16.8 2.3 12 2.3 12 2.3h-.1s-4.8 0-8.2.4c-.5.1-1.5.1-2.4 1-.7.8-.9 2.5-.9 2.5S0 8.1 0 10v2c0 1.9.5 3.8.5 3.8s.2 1.7.9 2.5c.9.9 2.1.9 2.6 1 1.9.2 8 .4 8 .4s4.8 0 8.2-.4c.5-.1 1.5-.1 2.4-1 .7-.8.9-2.5.9-2.5S24 13.9 24 12V10c0-1.9-.5-3.8-.5-3.8zM9.6 14.8V8.9l6.3 2.9-6.3 3z"/></svg>
+                        </a>
+                        <a class="social-link" href="https://www.instagram.com/yun.ting_10/" target="_blank" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.439-.645-1.439-1.44s.644-1.44 1.439-1.44z"/></svg>
+                        </a>
+                        <a class="social-link" href="https://x.com/Naki_413" target="_blank" aria-label="X">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                </div>
+
+                <h3 class="mt-4">Skills</h3>
+                <p>Digital Art / Video Editing / 3D Modeling</p>
+
+                <h3 class="mt-4">Hobbies</h3>
+                <p>Drawing, Photography, Read novels, Listen to music</p>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section id="drawing" class="drawing-horizontal-section">
+        <div class="horizontal-wrapper container">
+            <div class="horizontal-header">
+                <h2>DRAWING</h2>
+                <hr>
+            </div>
+            <div class="slider-track">
+                <div class="card-item"><img src="imgs/pic/567.jpg" alt="Work 1"></div>
+                <div class="card-item"><img src="imgs/pic/0708.jpg" alt="Work 2"></div>
+                <div class="card-item"><img src="imgs/pic/A4彩繪.png" alt="Work 3"></div>
+                <div class="card-item"><img src="imgs/pic/貴族小姐.jpg" alt="Work 4"></div>
+                <div class="card-item"><img src="imgs/pic/席菈.png" alt="Work 5"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="picture" class="content-section">
+        <div class="container">
+            <h2>PICTURE</h2>
+            <hr>
+            <div class="photo-tabs d-flex flex-wrap gap-2 mb-4">
+                <button class="video-tab active" data-photo="imgs/pic/禁止超速.jpg">禁止超速</button>
+                <button class="video-tab" data-photo="imgs/pic/轉彎前的光.jpg">轉彎前的光</button>
+                <button class="video-tab" data-photo="imgs/pic/1411222007-1.jpg">永續商品型錄1</button>
+                <button class="video-tab" data-photo="imgs/pic/1411222007-2.jpg">永續商品型錄2</button>
+                <button class="video-tab" data-photo="imgs/pic/1411222007-3.jpg">永續商品型錄3</button>
+                <button class="video-tab" data-photo="imgs/pic/1411222007-4.jpg">永續商品型錄4</button>
+            </div>
+
+            <div class="video-display-container d-flex justify-content-center">
+                <img id="main-photo-display" src="imgs/pic/禁止超速.jpg" alt="Selected Picture" 
+                    style="max-width: 100%; 
+                            max-height: 70vh; 
+                            object-fit: contain; 
+                            display: block; 
+                            border-radius: 15px; 
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </section>
+
+    <section id="video" class="content-section">
+        <div class="container">
+            <h2>VIDEO</h2>
+            <hr>
+            <div class="video-tabs d-flex flex-wrap gap-2 mb-4">
+                <button class="video-tab active" data-video="imgs/video/introduction.mp4">動態履歷表</button>
+                <button class="video-tab" data-video="imgs/video/貝貝的冒險.mp4">動畫設計初稿</button>
+                <button class="video-tab" data-video="imgs/video/小熊貝貝的冒險.mp4">小熊貝貝的冒險</button>
+            </div>
+
+            <div class="video-display-container d-flex justify-content-center">
+                <video id="main-video-player" controls playsinline preload="metadata">
+                    <source src="imgs/video/introduction.mp4" type="video/mp4">
+                    
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section id="model" class="content-section">
+        <div class="container">
+            <h2>MODEL</h2>
+            <hr>
+            <div class="photo-tabs d-flex flex-wrap gap-2 mb-4">
+                <button class="video-tab active" data-photo="imgs/model/sword.jpg">小型劍渲染</button>
+                <button class="video-tab" data-photo="imgs/model/sword_ao.jpg">小型劍白膜</button>
+                <button class="video-tab" data-photo="imgs/model/sence_01.jpg">場景渲染</button>
+                <button class="video-tab" data-photo="imgs/model/sence_ao.jpg">場景白膜</button>
+                <button class="video-tab" data-photo="imgs/model/lamp_ao.jpg">檯燈白模</button>
+            </div>
+
+            <div class="video-display-container d-flex justify-content-center">
+                <img id="main-model-display" src="imgs/model/sword.jpg" alt="Selected Model" 
+                    style="max-width: 100%; 
+                    max-height: 70vh; 
+                    object-fit: contain; 
+                    display: block; 
+                    border-radius: 15px; 
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </section>
+
+    <footer id="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h4>Contact Me</h4>
+                <p>If you wish to place a commission, feel free to contact me!</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Email</h4>
+                <p>wangyunting1024@gmail.com.com</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Location</h4>
+                <p>Taichung, Taiwan</p>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,423 @@
+/*index css*/
+header {
+    background-color: rgb(3, 3, 40);
+    width: 100%;
+    position: fixed; 
+    top: 0;
+    z-index: 1000; /* 確保在最上層 */
+    
+    /* 初始狀態設為隱藏 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px); /* 稍微往上偏，做出滑入效果 */
+    transition: none; /* 讓 GSAP 完全掌控 */
+}
+
+/* Footer CSS */
+#main-footer {
+    background-color: rgb(3, 3, 40); /* 與 Header 顏色一致 */
+    color: white;
+    width: 100%;
+    padding: 60px 0 20px 0; /* 增加上方空間讓內容不擁擠 */
+    text-align: center;
+    position: relative; /* 讓它跟隨在網頁最後面 */
+    z-index: 10;
+
+}
+
+#main-footer h4 {
+    font-family: "Times New Roman", serif;
+    color: #ffd08a;
+    margin-bottom: 15px;
+}
+
+#main-footer p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+
+
+/*gsap*/
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: rgb(8, 8, 31);
+}
+
+#parallax-container {
+    background-color: rgb(8, 8, 31);
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden; /* 防止圖片放大時出現捲軸 */
+}
+
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 效能優化 */
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-origin: bottom center;
+}
+
+#layer-fox {
+    top: 60px;
+}
+
+#layer-bear {
+    left: 0px;
+}
+
+
+/* 文字圖層容器 */
+#text-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* 水平置中 */
+    align-items: center;     /* 垂直置中 */
+    z-index: 100;            /* 確保在所有圖片上方 */
+    pointer-events: none;    /* 防止文字阻擋滑鼠點擊 */
+}
+
+/* 文字細節設定 */
+#text-overlay h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 5rem;
+    margin: 0;
+    color: rgb(3, 3, 40); 
+    opacity: 0;
+    transform: scale(0.5);
+}
+/*以上gsap*/
+
+
+#logo {
+    padding-left: 20px;
+    height: 50px;
+}
+
+/* 導覽行隱藏 */
+@media (min-width: 1100px) {
+  .navbar .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+  .navbar .navbar-collapse .navbar-nav {
+    flex-direction: row;
+  }
+  .navbar .navbar-toggler {
+    display: none !important;
+  }
+}
+
+/* 導覽行調整 */
+/* 可微調 link 顏色/間距 */
+#left_title {
+  font-size: 24px;
+}
+.navbar .nav-link {
+  color: #fff;
+  padding: .5rem 1rem;
+}
+.navbar .nav-link:hover {
+  text-decoration: none;
+  color: #ffd08a;
+  font-size: larger;
+}
+#logo {
+  max-height: 45px;
+}
+
+/*GSAP動畫後SECTIONS*/
+/* 讓點擊導覽列跳轉時有平滑滾動效果 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 內容區塊基礎樣式 */
+.content-section,
+.drawing-horizontal-section {
+    min-height: 100vh; /* 每個區塊佔滿一屏 */
+    padding-top: 100px; /* 留出空間給 fixed 的 header */
+    background-color: rgb(8, 8, 31); /* 與你之前的背景色統一 */
+    color: white;
+    position: relative;
+    z-index: 5; /* 確保在動畫容器之後出現 */
+}
+
+.content-section h2,
+.drawing-horizontal-section h2 {
+    font-family: "Times New Roman", serif;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* 修正書籤跳轉位置（避免被 header 遮住） */
+section {
+    scroll-margin-top: 80px; 
+}
+
+/*intro*/
+/* 社群按鈕容器 */
+.social-links-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* 個別按鈕樣式 */
+.social-link {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-link svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* 滑鼠懸停特效 */
+.social-link:hover {
+    background-color: #ffd08a; /* 你的亮色系主題色 */
+    color: rgb(3, 3, 40);      /* 背景深藍色 */
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 208, 138, 0.3);
+}
+
+/*DRAWING SLIDER部分*/
+/* 整個區塊的高度由 JS 控制捲動距離 */
+/* 橫向區塊容器 */
+.drawing-horizontal-section {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(8, 8, 31);
+}
+
+.horizontal-wrapper {  
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* 軌道：確保寬度是由內容撐開，且不換行 */
+.slider-track {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0 10vw; /* 初始偏移量 */
+    gap: 50px;       /* 卡片間距 */
+    width: max-content; 
+    will-change: transform;
+}
+
+/* 固定卡片大小，避免變形 */
+.card-item {
+    width: 320px;    /* 視需求調整寬度 */
+    height: auto;   /* 視需求調整高度 */
+    flex-shrink: 0;  /* 防止被壓縮 */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.card-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 關鍵：裁切填充，不留白 */
+}
+
+/*video*/
+/* 膠囊按鈕樣式 */
+.video-tab {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 8px 24px;
+    border-radius: 50px; /* 膠囊形狀 */
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+/* 膠囊選中後的變色狀態 */
+.video-tab.active {
+    background-color: #ffd08a; /* 你的主題金色 */
+    color: #030328;
+    border-color: #ffd08a;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 208, 138, 0.4);
+}
+
+.video-tab:hover:not(.active) {
+    border-color: #ffd08a;
+    color: #ffd08a;
+}
+
+
+
+/* 選中狀態保持你的主題金，但在白底下可以稍微加深字體 */
+#video .video-tab.active {
+    background-color: #ffd08a;
+    color: #030328;
+    border-color: #ffd08a;
+}
+
+/* 修正後的播放器容器：背景改為與網頁一致的深藍色 */
+.video-display-container {
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    margin: 20px auto;
+    /* 修改這裡：使用與 content-section 一致的深藍色 */
+    background: rgb(8, 8, 31); 
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 修正後的影片元件 */
+#main-video-player {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* 修改這裡：讓影片未載入前的背景也是深色 */
+    background: rgb(8, 8, 31); 
+    display: block;
+}
+
+
+/*picture部分*/
+.lateral-pin-section {
+    background-color: rgb(8, 8, 31); /* 回到深色背景 */
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-panel {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+}
+
+.sticky-content {
+    width: 100%;
+}
+
+/* 指示器樣式 */
+.lateral-indicators {
+    margin-top: 50px;
+}
+
+.indicator {
+    font-family: "Times New Roman", serif;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 20px 0;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+}
+
+.indicator::before {
+    content: '';
+    width: 0px;
+    height: 2px;
+    background: #ffd08a;
+    margin-right: 0;
+    transition: all 0.4s ease;
+}
+
+.indicator.active {
+    color: #ffd08a;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.indicator.active::before {
+    width: 40px;
+    margin-right: 15px;
+}
+
+/* 右側圖片樣式 */
+.right-panel {
+    padding: 100px 5% 100px 0;
+}
+
+.scroll-item {
+    width: 100%;
+    margin-bottom: 15vh; /* 圖片之間的間距 */
+    opacity: 0.3;
+    transform: translateY(50px);
+    transition: all 0.6s ease;
+}
+
+.scroll-item.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-item img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+
+
+/* 手機版專用調整 */
+@media (max-width: 767px) {
+    /* 1. 調整開場動畫文字大小 */
+    #text-overlay h1 {
+        font-size: 2.5rem !important; /* 縮小文字避免超出螢幕 */
+    }
+
+    /* 2. 讓首頁圖片高度自適應，不要填滿 100vh 以防變形 */
+    #parallax-container {
+        height: 60vh; /* 手機版短一點 */
+    }
+
+    /* 3. Drawing 部分：改回垂直捲動或縮小卡片 */
+    .slider-track {
+        gap: 20px;
+        padding: 0 5vw;
+    }
+    
+    .card-item {
+        width: 250px; /* 卡片縮小 */
+    }
+
+    /* 4. 影片與圖片容器：高度調整 */
+    .video-display-container {
+        height: 300px;
+    }
+
+    
+}
