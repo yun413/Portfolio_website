@@ -55,16 +55,14 @@ server.get("/about", (req, res) => {
 
 
 server.post("/contact", (req, res) =>{
-    ContactDB.insert(req.body);
+    ContactDB.insert(req.body)
     //move to public/upload
-    var upFile=req.files.myFile1;
-    upFile.mv(__dirname+"/public/upload/"+upFile.name, function(err){
-        if(err==null){
-            res.render("msg",{message:"I got a file: "+upFile.name})
-        }else{
-            res.render("msg",{message:err});
-        }
+    .then(() => {
+        res.render("msg", { message: "感謝 " + req.body.username + "，我們已收到您的訊息！" });
     })
+    .catch(err => {
+        res.render("msg", { message: "錯誤：" + err });
+    });
 })
 
 

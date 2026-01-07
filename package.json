@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "express-fileupload": "^1.5.2",
+    "nedb-promises": "^6.2.3"
+  }
+}
