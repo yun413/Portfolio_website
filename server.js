@@ -61,9 +61,11 @@ server.post("/contact", (req, res) =>{
         res.render("msg", { message: "感謝 " + req.body.username + "，我們已收到您的訊息！" });
     })
     .catch(err => {
-        res.render("msg", { message: "錯誤：" + err });
+        res.render("msg", { message: "傳送失敗，請再次嘗試。" });
     });
 })
 
 
-server.listen(8080);
+server.listen(8080, () => {
+    console.log("已成功開啟 請至 http://localhost:8080");
+});
