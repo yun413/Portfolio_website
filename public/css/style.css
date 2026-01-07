@@ -166,9 +166,9 @@ html {
     margin-bottom: 20px;
 }
 
-/* 修正書籤跳轉位置（避免被 header 遮住） */
+/* 修正書籤跳轉位置 */
 section {
-    scroll-margin-top: 80px; 
+    scroll-margin-top: 30px; 
 }
 
 /*intro*/
@@ -200,15 +200,14 @@ section {
 
 /* 滑鼠懸停特效 */
 .social-link:hover {
-    background-color: #ffd08a; /* 你的亮色系主題色 */
-    color: rgb(3, 3, 40);      /* 背景深藍色 */
+    background-color: #ffd08a; 
+    color: rgb(3, 3, 40);     
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(255, 208, 138, 0.3);
 }
 
 /*DRAWING SLIDER部分*/
-/* 整個區塊的高度由 JS 控制捲動距離 */
-/* 橫向區塊容器 */
+/* 橫向區塊 */
 .drawing-horizontal-section {
     width: 100%;
     height: 100vh;
@@ -224,20 +223,20 @@ section {
     justify-content: flex-start;
 }
 
-/* 軌道：確保寬度是由內容撐開，且不換行 */
+/* 軌道 */
 .slider-track {
     display: flex;
     flex-wrap: nowrap;
-    padding: 0 10vw; /* 初始偏移量 */
-    gap: 50px;       /* 卡片間距 */
+    padding: 0 10vw; 
+    gap: 50px;      
     width: max-content; 
     will-change: transform;
 }
 
-/* 固定卡片大小，避免變形 */
+/* 卡片大小 */
 .card-item {
-    width: 320px;    /* 視需求調整寬度 */
-    height: auto;   /* 視需求調整高度 */
+    width: 320px;  
+    height: auto;   
     flex-shrink: 0;  /* 防止被壓縮 */
     border-radius: 15px;
     overflow: hidden;
@@ -247,7 +246,7 @@ section {
 .card-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 關鍵：裁切填充，不留白 */
+    object-fit: cover; 
 }
 
 /*video*/
@@ -278,20 +277,18 @@ section {
 
 
 
-/* 選中狀態保持你的主題金，但在白底下可以稍微加深字體 */
 #video .video-tab.active {
     background-color: #ffd08a;
     color: #030328;
     border-color: #ffd08a;
 }
 
-/* 修正後的播放器容器：背景改為與網頁一致的深藍色 */
 .video-display-container {
     width: 100%;
     max-width: 900px;
-    height: 500px;
+    height: auto;  
+    min-height: 200px;  
     margin: 20px auto;
-    /* 修改這裡：使用與 content-section 一致的深藍色 */
     background: rgb(8, 8, 31); 
     border-radius: 15px;
     overflow: hidden;
@@ -300,13 +297,22 @@ section {
     align-items: center;
 }
 
-/* 修正後的影片元件 */
+/* 圖片的跟模型的防變形 */
+#main-photo-display, #main-model-display {
+    width: 100%;        
+    max-width: 100%;
+    height: auto;      
+    max-height: 75vh;  
+    object-fit: contain; 
+    display: block;
+}
+
+
 #main-video-player {
     width: 100%;
     height: 100%;
     max-height: 100%;
     object-fit: contain;
-    /* 修改這裡：讓影片未載入前的背景也是深色 */
     background: rgb(8, 8, 31); 
     display: block;
 }
@@ -314,7 +320,7 @@ section {
 
 /*picture部分*/
 .lateral-pin-section {
-    background-color: rgb(8, 8, 31); /* 回到深色背景 */
+    background-color: rgb(8, 8, 31);
     color: white;
     position: relative;
     overflow: hidden;
@@ -392,31 +398,32 @@ section {
 
 
 
-/* 手機版專用調整 */
+/* 手機版 */
 @media (max-width: 767px) {
     /* 1. 調整開場動畫文字大小 */
     #text-overlay h1 {
-        font-size: 2.5rem !important; /* 縮小文字避免超出螢幕 */
+        font-size: 2.5rem !important;
     }
 
-    /* 2. 讓首頁圖片高度自適應，不要填滿 100vh 以防變形 */
+    /* 2. 圖片高度自適應 */
     #parallax-container {
-        height: 60vh; /* 手機版短一點 */
+        height: 60vh; 
     }
 
-    /* 3. Drawing 部分：改回垂直捲動或縮小卡片 */
+    /* 3. Drawing */
     .slider-track {
         gap: 20px;
         padding: 0 5vw;
     }
     
     .card-item {
-        width: 250px; /* 卡片縮小 */
+        width: 250px;
     }
 
-    /* 4. 影片與圖片容器：高度調整 */
+    /* 4. 影片與圖片容器*/
     .video-display-container {
-        height: 300px;
+        height: auto;
+        min-height: 200px;
     }
 
     
