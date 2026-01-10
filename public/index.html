@@ -37,7 +37,7 @@
             <li class="nav-item"><a class="nav-link" href="#video">VIDEO</a></li>
             <li class="nav-item"><a class="nav-link" href="#model">MODEL</a></li>
             <li class="nav-item"><a class="nav-link" href="#contact">CONTACT</a></li>
-
+            <li class="nav-item"><a class="nav-link text-warning fw-bold" href="/admin.html">ADMIN</a></li>
           </ul>
         </div>
       </div>
@@ -97,7 +97,7 @@
                 <h2>DRAWING</h2>
                 <hr>
             </div>
-            <div class="slider-track">
+            <div class="slider-track" id="drawing-container">
                 <div class="card-item"><img src="imgs/pic/567.jpg" alt="Work 1"></div>
                 <div class="card-item"><img src="imgs/pic/0708.jpg" alt="Work 2"></div>
                 <div class="card-item"><img src="imgs/pic/A4彩繪.png" alt="Work 3"></div>
@@ -111,7 +111,7 @@
         <div class="container">
             <h2>PICTURE</h2>
             <hr>
-            <div class="photo-tabs d-flex flex-wrap gap-2 mb-4">
+            <div class="photo-tabs d-flex flex-wrap gap-2 mb-4" id="picture-tabs">
                 <button class="video-tab active" data-photo="imgs/pic/禁止超速.jpg">請勿超速</button>
                 <button class="video-tab" data-photo="imgs/pic/轉彎前的光.jpg">轉彎請打燈</button>
                 <button class="video-tab" data-photo="imgs/pic/1411222007-1.jpg">永續商品型錄1</button>
@@ -130,7 +130,7 @@
         <div class="container">
             <h2>VIDEO</h2>
             <hr>
-            <div class="video-tabs d-flex flex-wrap gap-2 mb-4">
+            <div class="video-tabs d-flex flex-wrap gap-2 mb-4" id="video-tabs">
                 <button class="video-tab active" data-video="imgs/video/introduction.mp4">動態履歷表</button>
                 <button class="video-tab" data-video="imgs/video/貝貝的冒險.mp4">動畫設計初稿</button>
                 <button class="video-tab" data-video="imgs/video/小熊貝貝的冒險.mp4">小熊貝貝的冒險</button>
@@ -242,5 +242,64 @@
  
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="js/bs5vue.js"></script> 
+
+    <!-- admin的script -->
+     <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 頁面載入後立即向後端請求資料庫內容
+        fetch('/portfolio')
+            .then(response => response.json())
+            .then(data => {
+                const drawingContainer = document.getElementById('drawing-container');
+                const pictureTabs = document.getElementById('picture-tabs');
+                const videoTabs = document.getElementById('video-tabs');
+                const modelTabs = document.querySelector('#model .photo-tabs');
+
+                data.forEach(item => {
+                    // 根據類型 (category) 分類處理
+                    if (item.category === 'drawing') {
+                        // 建立 Drawing 的卡片結構
+                        const div = document.createElement('div');
+                        div.className = 'card-item';
+                        div.innerHTML = `<img src="${item.filePath}" alt="${item.title}">`;
+                        drawingContainer.appendChild(div);
+                    } 
+                    else if (item.category === 'picture') {
+                        // 建立 Picture 的切換按鈕
+                        const btn = document.createElement('button');
+                        btn.className = 'video-tab';
+                        btn.innerText = item.title;
+                        btn.onclick = () => {
+                            document.getElementById('main-photo-display').src = item.filePath;
+                        };
+                        pictureTabs.appendChild(btn);
+                    }
+                    else if (item.category === 'video') {
+                        // 建立 Video 的切換按鈕
+                        const btn = document.createElement('button');
+                        btn.className = 'video-tab';
+                        btn.innerText = item.title;
+                        btn.onclick = () => {
+                            const player = document.getElementById('main-video-player');
+                            player.src = item.filePath;
+                            player.play();
+                        };
+                        videoTabs.appendChild(btn);
+                    }
+                    else if (item.category === 'model') {
+                        // 建立 Model 的切換按鈕
+                        const btn = document.createElement('button');
+                        btn.className = 'video-tab';
+                        btn.innerText = item.title;
+                        btn.onclick = () => {
+                            document.getElementById('main-model-display').src = item.filePath;
+                        };
+                        if(modelTabs) modelTabs.appendChild(btn);
+                    }
+                });
+            })
+            .catch(err => console.error("無法讀取作品資料庫:", err));
+    });
+</script>
 </body>
 </html>

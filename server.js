@@ -66,6 +66,64 @@ server.post("/contact", (req, res) =>{
 })
 
 
+
+// 1. 修改新增作品路由
+server.post("/addPortfolio", (req, res) => {
+    if (!req.files || !req.files.workFile) {
+        return res.send("請選擇檔案，務必小於2MB");
+    }
+    var file = req.files.workFile;
+    var fileName = Date.now() + "_" + file.name;
+    
+    // 請務必在你的電腦中手動建立 Public/upload 資料夾
+    var savePath = __dirname + "/Public/upload/" + fileName; 
+    var webPath = "/upload/" + fileName;
+
+    file.mv(savePath, (err) => {
+        // 這裡的錯誤訊息要跟著路徑修正
+        if (err) return res.send("檔案上傳失敗，請檢查 Public/upload 資料夾是否存在。"); 
+
+        var newData = {
+            category: req.body.category,
+            title: req.body.title,
+            author: req.body.author,
+            filePath: webPath
+        };
+
+        PorfolioDB.insert(newData).then(() => {
+            res.send("<script>alert('新增成功!');window.location.href='/admin.html';</script>");
+        });
+    });
+});
+
+// 2. 新增一個 API，讓 admin.html 可以根據類型抓取目前所有的作品名稱
+server.get("/getPortfolioNames", (req, res) => {
+    PorfolioDB.find({ category: req.query.category }).then(results => {
+        res.send(results);
+    });
+});
+
+//3. 處理刪除作品 (包含驗證碼確認) ---
+server.post("/deletePortfolio", (req, res) => {
+    var category = req.body.category;
+    var title = req.body.title;
+    var confirmCode = req.body.confirmCode;
+
+    // 驗證確認碼是否等於作品名稱
+    if (title !== confirmCode) {
+        return res.send("<script>alert('刪除失敗：確認碼不正確！'); window.location.href='/admin.html';</script>");
+    }
+
+    // 執行刪除
+    PorfolioDB.remove({ category: category, title: title }, {}).then((numRemoved) => {
+        if (numRemoved > 0) {
+            res.send("<script>alert('作品已刪除'); window.location.href='/admin.html';</script>");
+        } else {
+            res.send("<script>alert('找不到該作品，無法刪除'); window.location.href='/admin.html';</script>");
+        }
+    });
+});
+
 server.listen(8080, () => {
     console.log("已成功開啟 請至 http://localhost:8080");
 });
