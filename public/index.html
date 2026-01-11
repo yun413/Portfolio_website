@@ -244,58 +244,107 @@
     <script src="js/bs5vue.js"></script> 
 
     <!-- admin的script -->
-     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // 頁面載入後立即向後端請求資料庫內容
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 通用函數：移除該區域內「所有」按鈕的 active 狀態
+        // 增加支援抓取 class 容器，避免 HTML 沒 ID 的問題
+        function clearAndSetActive(selector, clickedBtn) {
+            const container = (selector instanceof HTMLElement) ? selector : document.querySelector(selector);
+            if (container) {
+                container.querySelectorAll('.video-tab').forEach(btn => btn.classList.remove('active'));
+                clickedBtn.classList.add('active');
+            }
+        }
+
+        // --- 優化 1：讓原本寫死在 HTML 的按鈕點擊時也能熄滅動態新增的按鈕 ---
+        document.querySelectorAll('.photo-tabs, .video-tabs').forEach(container => {
+            container.addEventListener('click', (e) => {
+                if (e.target.classList.contains('video-tab')) {
+                    clearAndSetActive(container, e.target);
+                }
+            });
+        });
+
         fetch('/portfolio')
             .then(response => response.json())
             .then(data => {
                 const drawingContainer = document.getElementById('drawing-container');
                 const pictureTabs = document.getElementById('picture-tabs');
                 const videoTabs = document.getElementById('video-tabs');
-                const modelTabs = document.querySelector('#model .photo-tabs');
+                
+                // --- 優化 2：動態定位 Model 區域的容器，不依賴 ID ---
+                const modelSection = document.querySelector('#model');
+                const modelTabs = modelSection ? modelSection.querySelector('.photo-tabs') : null;
+
+                const imageLoadPromises = [];
 
                 data.forEach(item => {
-                    // 根據類型 (category) 分類處理
-                    if (item.category === 'drawing') {
-                        // 建立 Drawing 的卡片結構
+                    // --- DRAWING ---
+                    if (item.category === 'drawing' && drawingContainer) {
                         const div = document.createElement('div');
                         div.className = 'card-item';
-                        div.innerHTML = `<img src="${item.filePath}" alt="${item.title}">`;
+                        const img = document.createElement('img');
+                        img.src = item.filePath;
+                        imageLoadPromises.push(new Promise(resolve => img.onload = resolve));
+                        div.appendChild(img);
                         drawingContainer.appendChild(div);
-                    } 
-                    else if (item.category === 'picture') {
-                        // 建立 Picture 的切換按鈕
+                    }
+                    // --- PICTURE ---
+                    else if (item.category === 'picture' && pictureTabs) {
                         const btn = document.createElement('button');
                         btn.className = 'video-tab';
                         btn.innerText = item.title;
-                        btn.onclick = () => {
-                            document.getElementById('main-photo-display').src = item.filePath;
+                        btn.onclick = function() {
+                            clearAndSetActive('#picture-tabs', this);
+                            const display = document.getElementById('main-photo-display');
+                            gsap.to(display, { opacity: 0, duration: 0.3, onComplete: () => {
+                                display.src = item.filePath;
+                                gsap.to(display, { opacity: 1, duration: 0.3 });
+                            }});
                         };
                         pictureTabs.appendChild(btn);
                     }
-                    else if (item.category === 'video') {
-                        // 建立 Video 的切換按鈕
+                    // --- VIDEO ---
+                    else if (item.category === 'video' && videoTabs) {
                         const btn = document.createElement('button');
                         btn.className = 'video-tab';
                         btn.innerText = item.title;
-                        btn.onclick = () => {
+                        btn.onclick = function() {
+                            clearAndSetActive('#video-tabs', this);
                             const player = document.getElementById('main-video-player');
-                            player.src = item.filePath;
-                            player.play();
+                            gsap.to(player, { opacity: 0, duration: 0.3, onComplete: () => {
+                                player.src = item.filePath;
+                                player.load();
+                                player.play();
+                                gsap.to(player, { opacity: 1, duration: 0.3 });
+                            }});
                         };
                         videoTabs.appendChild(btn);
                     }
-                    else if (item.category === 'model') {
-                        // 建立 Model 的切換按鈕
+                    // --- MODEL ---
+                    else if (item.category === 'model' && modelTabs) {
                         const btn = document.createElement('button');
                         btn.className = 'video-tab';
                         btn.innerText = item.title;
-                        btn.onclick = () => {
-                            document.getElementById('main-model-display').src = item.filePath;
+                        btn.onclick = function() {
+                            clearAndSetActive(modelTabs, this); // 針對抓到的 Model 容器清除
+                            const display = document.getElementById('main-model-display');
+                            gsap.to(display, { opacity: 0, duration: 0.3, onComplete: () => {
+                                display.src = item.filePath;
+                                gsap.to(display, { opacity: 1, duration: 0.3 });
+                            }});
                         };
-                        if(modelTabs) modelTabs.appendChild(btn);
+                        modelTabs.appendChild(btn);
                     }
+                });
+
+                // --- 優化 3：確保 GSAP 滾動能正確計算新寬度 ---
+                Promise.all(imageLoadPromises).then(() => {
+                    setTimeout(() => {
+                        if (typeof ScrollTrigger !== 'undefined') {
+                            ScrollTrigger.refresh();
+                        }
+                    }, 300);
                 });
             })
             .catch(err => console.error("無法讀取作品資料庫:", err));

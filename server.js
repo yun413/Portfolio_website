@@ -103,23 +103,35 @@ server.get("/getPortfolioNames", (req, res) => {
     });
 });
 
+// 2.查找
+// 處理查找作品 (回應 JSON 資料給前端)
+server.get("/portfolioSearch", (req, res) => {
+    // 使用 findOne 找單一資料
+    PorfolioDB.findOne({ 
+        category: req.query.category, 
+        title: req.query.title 
+    }).then(result => {
+        // 如果找不到 result 會是 null
+        res.send(result); 
+    }).catch(err => {
+        res.status(500).send("資料庫查詢失敗");
+    });
+});
+
 //3. 處理刪除作品 (包含驗證碼確認) ---
 server.post("/deletePortfolio", (req, res) => {
-    var category = req.body.category;
-    var title = req.body.title;
-    var confirmCode = req.body.confirmCode;
+    var { category, title, confirmCode } = req.body;
 
-    // 驗證確認碼是否等於作品名稱
     if (title !== confirmCode) {
-        return res.send("<script>alert('刪除失敗：確認碼不正確！'); window.location.href='/admin.html';</script>");
+        return res.send("<script>alert('刪除失敗：確認碼與作品名稱不符！'); window.location.href='/admin.html';</script>");
     }
 
-    // 執行刪除
     PorfolioDB.remove({ category: category, title: title }, {}).then((numRemoved) => {
         if (numRemoved > 0) {
-            res.send("<script>alert('作品已刪除'); window.location.href='/admin.html';</script>");
+            // 刪除成功後直接回到管理頁面
+            res.send("<script>alert('作品已永久刪除'); window.location.href='/admin.html';</script>");
         } else {
-            res.send("<script>alert('找不到該作品，無法刪除'); window.location.href='/admin.html';</script>");
+            res.send("<script>alert('找不到作品，請重新確認'); window.location.href='/admin.html';</script>");
         }
     });
 });
