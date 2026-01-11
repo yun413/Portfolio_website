@@ -119,7 +119,7 @@
 </div>
 
 <script>
-    // 自動更新名稱選單的函數
+    // 更新名稱選單
     function updateTitleList(typeId, selectId) {
         const category = document.getElementById(typeId).value;
         const targetSelect = document.getElementById(selectId);
@@ -138,41 +138,41 @@
     }
 
     // 搜尋功能
-function doSearch() {
-    const cat = document.getElementById('searchType').value;
-    const title = document.getElementById('searchTitleSelect').value;
-    
-    if(!title) return alert("請先選擇作品");
+    function doSearch() {
+        const cat = document.getElementById('searchType').value;
+        const title = document.getElementById('searchTitleSelect').value;
+        
+        if(!title) return alert("請先選擇作品");
 
-    fetch(`/portfolioSearch?category=${cat}&title=${title}`)
-        .then(res => {
-            if (res.status === 404) throw new Error("找不到路由，請檢查 server.js");
-            return res.json();
-        })
-        .then(data => {
-            const img = document.getElementById('searchImg');
-            const msg = document.getElementById('searchMsg');
-            
-            if(data && data.filePath) {
-                msg.innerText = "找到作品：" + data.title;
-                img.src = data.filePath;
+        fetch(`/portfolioSearch?category=${cat}&title=${title}`)
+            .then(res => {
+                if (res.status === 404) throw new Error("找不到路由，請檢查 server.js");
+                return res.json();
+            })
+            .then(data => {
+                const img = document.getElementById('searchImg');
+                const msg = document.getElementById('searchMsg');
                 
-                // --- 簡單顯現圖片的樣式 ---
-                img.style.display = 'block';
-                img.style.width = '200px';      // 固定寬度，不佔空間
-                img.style.marginTop = '15px';
-                img.style.border = '2px solid #0d6efd';
-                img.style.borderRadius = '5px';
-            } else {
-                msg.innerText = "資料庫中沒有這筆資料。";
-                img.style.display = 'none';
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("連線失敗：可能 server.js 沒寫好 /portfolioSearch 路由。");
-        });
-}
+                if(data && data.filePath) {
+                    msg.innerText = "找到作品：" + data.title;
+                    img.src = data.filePath;
+                    
+                    // --- 簡單顯現圖片的樣式 ---
+                    img.style.display = 'block';
+                    img.style.width = '200px';      // 固定寬度，不佔空間
+                    img.style.marginTop = '15px';
+                    img.style.border = '2px solid #0d6efd';
+                    img.style.borderRadius = '5px';
+                } else {
+                    msg.innerText = "資料庫中沒有這筆資料。";
+                    img.style.display = 'none';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("連線失敗：可能 server.js 沒寫好 /portfolioSearch 路由。");
+            });
+    }
 </script>
 </body>
 </html>
