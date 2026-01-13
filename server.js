@@ -16,7 +16,6 @@ server.use(fileUpload({limits:{fileSize:2*1024*1024}}))
 var DB=require("nedb-promises");
 var ServiceDB = DB.create(__dirname+"/Service.db");
 var PorfolioDB = DB.create(__dirname+"/Porfolio.db");
-var ContactDB = DB.create(__dirname+"/Contact.db");
 
 
 
@@ -42,14 +41,6 @@ server.get("/showServices",(req,res)=>{
 
 
 
-server.post("/contact_me", (req, res) =>{
-    ContactDB.insert(req.body)
-   
-    .then(() => {
-        res.render("msg", { message: "感謝 " + req.body.username + "，我們已收到您的訊息！" });
-    })
-    
-})
 
 
 
