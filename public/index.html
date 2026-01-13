@@ -36,7 +36,7 @@
             <li class="nav-item"><a class="nav-link" href="#picture">PICTURE</a></li>
             <li class="nav-item"><a class="nav-link" href="#video">VIDEO</a></li>
             <li class="nav-item"><a class="nav-link" href="#model">MODEL</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">CONTACT</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact_me">CONTACT</a></li>
             <li class="nav-item"><a class="nav-link text-warning fw-bold" href="/admin.html" target="_blank">ADMIN</a></li>
           </ul>
         </div>
@@ -170,7 +170,7 @@
     </section>
 
 
-    <section id="contact">
+    <section id="contact_me">
         <div class="container content-section">
             <div class="row">
                 <div class="col-lg-12">
@@ -182,7 +182,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <form name="sentMessage" id="contactForm" action="/contact"  method="POST" target="_blank">
+                    <form name="sentMessage" id="contactForm" action="/contact_me"  method="POST" target="_blank">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -244,111 +244,110 @@
     <script src="js/bs5vue.js"></script> 
 
     <!-- admin的script -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // 通用函數：移除該區域內「所有」按鈕的 active 狀態
-        // 增加支援抓取 class 容器，避免 HTML 沒 ID 的問題
-        function clearAndSetActive(selector, clickedBtn) {
-            const container = (selector instanceof HTMLElement) ? selector : document.querySelector(selector);
-            if (container) {
-                container.querySelectorAll('.video-tab').forEach(btn => btn.classList.remove('active'));
-                clickedBtn.classList.add('active');
-            }
-        }
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
-        // --- 優化 1：讓原本寫死在 HTML 的按鈕點擊時也能熄滅動態新增的按鈕 ---
-        document.querySelectorAll('.photo-tabs, .video-tabs').forEach(container => {
-            container.addEventListener('click', (e) => {
-                if (e.target.classList.contains('video-tab')) {
-                    clearAndSetActive(container, e.target);
+            function clearAndSetActive(selector, clickedBtn) {
+                const container = (selector instanceof HTMLElement) ? selector : document.querySelector(selector);
+                if (container) {
+                    container.querySelectorAll('.video-tab').forEach(btn => btn.classList.remove('active'));
+                    clickedBtn.classList.add('active');
                 }
+            }
+
+            // --- 1：按鈕動態更新 ---
+            document.querySelectorAll('.photo-tabs, .video-tabs').forEach(container => {
+                container.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('video-tab')) {
+                        clearAndSetActive(container, e.target);
+                    }
+                });
             });
-        });
 
-        fetch('/portfolio')
-            .then(response => response.json())
-            .then(data => {
-                const drawingContainer = document.getElementById('drawing-container');
-                const pictureTabs = document.getElementById('picture-tabs');
-                const videoTabs = document.getElementById('video-tabs');
-                
-                // --- 優化 2：動態定位 Model 區域的容器，不依賴 ID ---
-                const modelSection = document.querySelector('#model');
-                const modelTabs = modelSection ? modelSection.querySelector('.photo-tabs') : null;
+            fetch('/portfolio')
+                .then(response => response.json())
+                .then(data => {
+                    const drawingContainer = document.getElementById('drawing-container');
+                    const pictureTabs = document.getElementById('picture-tabs');
+                    const videoTabs = document.getElementById('video-tabs');
+                    
+                    // --- 2：動態定位 Model 區域的容器 ---
+                    const modelSection = document.querySelector('#model');
+                    const modelTabs = modelSection ? modelSection.querySelector('.photo-tabs') : null;
 
-                const imageLoadPromises = [];
+                    const imageLoadPromises = [];
 
-                data.forEach(item => {
-                    // --- DRAWING ---
-                    if (item.category === 'drawing' && drawingContainer) {
-                        const div = document.createElement('div');
-                        div.className = 'card-item';
-                        const img = document.createElement('img');
-                        img.src = item.filePath;
-                        imageLoadPromises.push(new Promise(resolve => img.onload = resolve));
-                        div.appendChild(img);
-                        drawingContainer.appendChild(div);
-                    }
-                    // --- PICTURE ---
-                    else if (item.category === 'picture' && pictureTabs) {
-                        const btn = document.createElement('button');
-                        btn.className = 'video-tab';
-                        btn.innerText = item.title;
-                        btn.onclick = function() {
-                            clearAndSetActive('#picture-tabs', this);
-                            const display = document.getElementById('main-photo-display');
-                            gsap.to(display, { opacity: 0, duration: 0.3, onComplete: () => {
-                                display.src = item.filePath;
-                                gsap.to(display, { opacity: 1, duration: 0.3 });
-                            }});
-                        };
-                        pictureTabs.appendChild(btn);
-                    }
-                    // --- VIDEO ---
-                    else if (item.category === 'video' && videoTabs) {
-                        const btn = document.createElement('button');
-                        btn.className = 'video-tab';
-                        btn.innerText = item.title;
-                        btn.onclick = function() {
-                            clearAndSetActive('#video-tabs', this);
-                            const player = document.getElementById('main-video-player');
-                            gsap.to(player, { opacity: 0, duration: 0.3, onComplete: () => {
-                                player.src = item.filePath;
-                                player.load();
-                                player.play();
-                                gsap.to(player, { opacity: 1, duration: 0.3 });
-                            }});
-                        };
-                        videoTabs.appendChild(btn);
-                    }
-                    // --- MODEL ---
-                    else if (item.category === 'model' && modelTabs) {
-                        const btn = document.createElement('button');
-                        btn.className = 'video-tab';
-                        btn.innerText = item.title;
-                        btn.onclick = function() {
-                            clearAndSetActive(modelTabs, this); // 針對抓到的 Model 容器清除
-                            const display = document.getElementById('main-model-display');
-                            gsap.to(display, { opacity: 0, duration: 0.3, onComplete: () => {
-                                display.src = item.filePath;
-                                gsap.to(display, { opacity: 1, duration: 0.3 });
-                            }});
-                        };
-                        modelTabs.appendChild(btn);
-                    }
-                });
-
-                // --- 優化 3：確保 GSAP 滾動能正確計算新寬度 ---
-                Promise.all(imageLoadPromises).then(() => {
-                    setTimeout(() => {
-                        if (typeof ScrollTrigger !== 'undefined') {
-                            ScrollTrigger.refresh();
+                    data.forEach(item => {
+                        // --- DRAWING ---
+                        if (item.category === 'drawing' && drawingContainer) {
+                            const div = document.createElement('div');
+                            div.className = 'card-item';
+                            const img = document.createElement('img');
+                            img.src = item.filePath;
+                            imageLoadPromises.push(new Promise(resolve => img.onload = resolve));
+                            div.appendChild(img);
+                            drawingContainer.appendChild(div);
                         }
-                    }, 300);
-                });
-            })
-            .catch(err => console.error("無法讀取作品資料庫:", err));
-    });
-</script>
+                        // --- PICTURE ---
+                        else if (item.category === 'picture' && pictureTabs) {
+                            const btn = document.createElement('button');
+                            btn.className = 'video-tab';
+                            btn.innerText = item.title;
+                            btn.onclick = function() {
+                                clearAndSetActive('#picture-tabs', this);
+                                const display = document.getElementById('main-photo-display');
+                                gsap.to(display, { opacity: 0, duration: 0.3, onComplete: () => {
+                                    display.src = item.filePath;
+                                    gsap.to(display, { opacity: 1, duration: 0.3 });
+                                }});
+                            };
+                            pictureTabs.appendChild(btn);
+                        }
+                        // --- VIDEO ---
+                        else if (item.category === 'video' && videoTabs) {
+                            const btn = document.createElement('button');
+                            btn.className = 'video-tab';
+                            btn.innerText = item.title;
+                            btn.onclick = function() {
+                                clearAndSetActive('#video-tabs', this);
+                                const player = document.getElementById('main-video-player');
+                                gsap.to(player, { opacity: 0, duration: 0.3, onComplete: () => {
+                                    player.src = item.filePath;
+                                    player.load();
+                                    player.play();
+                                    gsap.to(player, { opacity: 1, duration: 0.3 });
+                                }});
+                            };
+                            videoTabs.appendChild(btn);
+                        }
+                        // --- MODEL ---
+                        else if (item.category === 'model' && modelTabs) {
+                            const btn = document.createElement('button');
+                            btn.className = 'video-tab';
+                            btn.innerText = item.title;
+                            btn.onclick = function() {
+                                clearAndSetActive(modelTabs, this);
+                                const display = document.getElementById('main-model-display');
+                                gsap.to(display, { opacity: 0, duration: 0.3, onComplete: () => {
+                                    display.src = item.filePath;
+                                    gsap.to(display, { opacity: 1, duration: 0.3 });
+                                }});
+                            };
+                            modelTabs.appendChild(btn);
+                        }
+                    });
+
+                    // --- 3：確保 GSAP 滾動能正確計算新寬度 ---
+                    Promise.all(imageLoadPromises).then(() => {
+                        setTimeout(() => {
+                            if (typeof ScrollTrigger !== 'undefined') {
+                                ScrollTrigger.refresh();
+                            }
+                        }, 300);
+                    });
+                })
+                .catch(err => console.error("無法讀取作品資料庫:", err));
+        });
+    </script>
 </body>
 </html>

@@ -18,18 +18,8 @@ var ServiceDB = DB.create(__dirname+"/Service.db");
 var PorfolioDB = DB.create(__dirname+"/Porfolio.db");
 var ContactDB = DB.create(__dirname+"/Contact.db");
 
-server.get("/", (req, res) => {
-    res.send("Hello world!");
-})
-server.get("/services", (req, res) => {
-    ServiceDB.find({},{_id:0}).then(results=>{
-       
-        res.send(results);
-    }).catch(error=>{
 
-    })
-    
-})
+
 
 server.get("/portfolio", (req, res) => {
     PorfolioDB.find({}).then(results=>{
@@ -49,20 +39,16 @@ server.get("/showServices",(req,res)=>{
 
 })
 
-server.get("/about", (req, res) => {
-    res.send("Welcome " + req.query.user + " to My first NodeJS server!");
-})
 
 
-server.post("/contact", (req, res) =>{
+
+server.post("/contact_me", (req, res) =>{
     ContactDB.insert(req.body)
-    //move to public/upload
+   
     .then(() => {
         res.render("msg", { message: "感謝 " + req.body.username + "，我們已收到您的訊息！" });
     })
-    .catch(err => {
-        res.render("msg", { message: "傳送失敗，請再次嘗試。" });
-    });
+    
 })
 
 
