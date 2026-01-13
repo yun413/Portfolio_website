@@ -3,8 +3,6 @@ var server = express();
 var bodyParser = require("body-parser");
 
 
-server.set("view engine", 'ejs');
-server.set("views", __dirname+"/view")
 
 var fileUpload = require("express-fileupload");
 
@@ -14,7 +12,6 @@ server.use(bodyParser.json());
 server.use(fileUpload({limits:{fileSize:2*1024*1024}}))
 
 var DB=require("nedb-promises");
-var ServiceDB = DB.create(__dirname+"/Service.db");
 var PorfolioDB = DB.create(__dirname+"/Porfolio.db");
 
 
@@ -28,23 +25,11 @@ server.get("/portfolio", (req, res) => {
 })
 
 
-server.get("/showServices",(req,res)=>{
-    ServiceDB.find({},{_id:0}).then(results=>{
-       
-        res.render("service",{Services:results});
-    }).catch(error=>{
-
-    })
-
-})
 
 
 
 
-
-
-
-// 1. 修改新增作品路由
+// 1. 新增作品
 server.post("/addPortfolio", (req, res) => {
     if (!req.files || !req.files.workFile) {
         return res.send("請選擇檔案，務必小於2MB");
@@ -57,8 +42,8 @@ server.post("/addPortfolio", (req, res) => {
     var webPath = "/upload/" + fileName;
 
     file.mv(savePath, (err) => {
-        // 這裡的錯誤訊息要跟著路徑修正
-        if (err) return res.send("檔案上傳失敗，請檢查 Public/upload 資料夾是否存在。"); 
+        
+        if (err) return res.send("檔案上傳失敗。"); 
 
         var newData = {
             category: req.body.category,
@@ -81,7 +66,6 @@ server.get("/getPortfolioNames", (req, res) => {
 });
 
 // 2.查找
-// 處理查找作品 (回應 JSON 資料給前端)
 server.get("/portfolioSearch", (req, res) => {
     // 使用 findOne 找單一資料
     PorfolioDB.findOne({ 
