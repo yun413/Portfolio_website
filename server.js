@@ -50,7 +50,7 @@ server.post("/addPortfolio", (req, res) => {
             author: req.body.author,
             filePath: webPath
         };
-
+        //為新增的資料產生id亂碼
         PorfolioDB.insert(newData).then(() => {
             res.send("<script>alert('新增成功!');window.location.href='/admin.html';</script>");
         });
