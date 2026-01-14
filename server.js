@@ -6,7 +6,7 @@ var bodyParser = require("body-parser");
 
 var fileUpload = require("express-fileupload");
 
-server.use(express.static(__dirname + "/Public"));
+server.use(express.static(__dirname + "/public"));
 server.use(bodyParser.urlencoded());
 server.use(bodyParser.json());
 server.use(fileUpload({limits:{fileSize:2*1024*1024}}))
@@ -36,8 +36,8 @@ server.post("/addPortfolio", (req, res) => {
     }
     var file = req.files.workFile;
     var fileName = Date.now() + "_" + file.name;
-    
-    var savePath = __dirname + "/Public/upload/" + fileName; 
+
+    var savePath = __dirname + "/public/upload/" + fileName;
     var webPath = "/upload/" + fileName;
 
     file.mv(savePath, (err) => {
